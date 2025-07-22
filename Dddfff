@@ -1,0 +1,19 @@
+<input type="text" id="longUrl" placeholder="URL লিখো">
+<button onclick="shorten()">Short করো</button>
+<p id="output"></p>
+
+<script>
+function shorten() {
+  let longUrl = document.getElementById("longUrl").value;
+  let encoded = btoa(longUrl);
+  let short = location.href + "?r=" + encoded;
+  document.getElementById("output").innerHTML = `<a href="${short}">${short}</a>`;
+}
+window.onload = () => {
+  let param = new URLSearchParams(window.location.search).get("r");
+  if (param) {
+    let decoded = atob(param);
+    window.location.href = decoded;
+  }
+}
+</script>
