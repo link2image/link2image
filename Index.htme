@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link2Image - শর্ট লিংক জেনারেটর</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 30px; background: #f5f5f5; }
+        h1 { color: #333; }
+        input, button { padding: 10px; font-size: 16px; width: 80%; max-width: 400px; margin: 10px 0; }
+        #output a { display: block; margin-top: 15px; color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>লিংক টু ইমেজ</h1>
+    <input type="url" id="originalUrl" placeholder="এখানে মূল লিংক দিন...">
+    <button onclick="generateLink()">শর্ট লিংক তৈরি করুন</button>
+    <div id="output"></div>
+
+    <script>
+        function generateLink() {
+            const originalUrl = document.getElementById('originalUrl').value;
+            if (!originalUrl) return alert("লিংক ইনপুট দিন!");
+            
+            const shortCode = Math.random().toString(36).substring(2, 6);
+            const shortLink = window.location.href.split('?')[0] + '?go=' + shortCode;
+            
+            document.getElementById('output').innerHTML = `
+                <p>আপনার শর্ট লিংক:</p>
+                <a href="${shortLink}" target="_blank">${shortLink}</a>
+                <p>মূল লিংক: ${originalUrl}</p>
+            `;
+            
+            localStorage.setItem(shortCode, originalUrl);
+        }
+
+        // রিডাইরেক্ট লজিক
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('go')) {
+            const originalUrl = localStorage.getItem(params.get('go'));
+            if (originalUrl) {
+                alert("রিডাইরেক্ট হবে: " + originalUrl);
+                // window.location.href = originalUrl; // সার্ভার থাকলে এই লাইন আনকমেন্ট করুন
+            }
+        }
+    </script>
+</body>
+</html>
